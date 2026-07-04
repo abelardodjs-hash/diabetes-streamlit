@@ -2,6 +2,10 @@ import streamlit as st
 import pandas as pd
 import joblib
 
+from io import BytesIO
+
+from reportlab.lib.styles import getSampleStyleSheet
+from reportlab.platypus import SimpleDocTemplate, Paragraph
 # -------------------------
 # Configuración de la página
 # -------------------------
@@ -139,6 +143,3 @@ if st.button("🔍 Predecir riesgo de diabetes", use_container_width=True):
         mime="application/pdf"
     )
 
-from io import BytesIO
-from reportlab.lib.styles import getSampleStyleSheet
-from reportlab.platypus import SimpleDocTemplate, Paragraph
