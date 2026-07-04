@@ -133,14 +133,39 @@ if st.button("🔍 Predecir riesgo de diabetes", use_container_width=True):
 
     st.dataframe(datos, use_container_width=True)
 
-pdf = generar_pdf(datos, prediccion, probabilidad)
+if st.button("🔍 Predecir riesgo de diabetes", use_container_width=True):
 
-st.download_button(
-    label="📄 Descargar reporte en PDF",
-    data=pdf,
-    file_name="Reporte_Diabetes.pdf",
-    mime="application/pdf"
-)
+    prediccion = modelo.predict(datos)[0]
+    probabilidad = modelo.predict_proba(datos)[0][1]
+
+    st.divider()
+
+    st.subheader("📊 Resultado")
+
+    if prediccion == 1:
+        st.error("⚠️ El paciente presenta ALTO RIESGO de diabetes.")
+    else:
+        st.success("✅ El paciente presenta BAJO RIESGO de diabetes.")
+
+    st.metric(
+        label="Probabilidad estimada",
+        value=f"{probabilidad*100:.2f}%"
+    )
+
+    st.progress(float(probabilidad))
+
+    st.subheader("📋 Datos evaluados")
+    st.dataframe(datos, use_container_width=True)
+
+    # ---- PDF ----
+    pdf = generar_pdf(datos, prediccion, probabilidad)
+
+    st.download_button(
+        "📄 Descargar reporte PDF",
+        pdf,
+        file_name="Reporte_Diabetes.pdf",
+        mime="application/pdf"
+    )
 
 from io import BytesIO
 from reportlab.lib.styles import getSampleStyleSheet
