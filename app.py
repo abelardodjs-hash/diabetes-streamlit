@@ -131,7 +131,7 @@ if st.button("🔍 Predecir riesgo de diabetes", use_container_width=True):
 
     st.subheader("📋 Datos evaluados")
 
-    st.dataframe(datos, use_container_width=True
+    st.dataframe(datos, use_container_width=True)
 
 pdf = generar_pdf(datos, prediccion, probabilidad)
 
