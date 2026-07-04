@@ -71,6 +71,36 @@ datos = pd.DataFrame([{
     "Obesidad": convertir(Obesidad)
 }])
 
+def generar_pdf(datos, prediccion, probabilidad):
+    buffer = BytesIO()
+
+    doc = SimpleDocTemplate(buffer)
+    estilos = getSampleStyleSheet()
+    elementos = []
+
+    elementos.append(Paragraph("<b>REPORTE DE PREDICCIÓN DE RIESGO DE DIABETES</b>", estilos["Title"]))
+    elementos.append(Paragraph("<br/>", estilos["Normal"]))
+
+    if prediccion == 1:
+        resultado = "ALTO RIESGO DE DIABETES"
+    else:
+        resultado = "BAJO RIESGO DE DIABETES"
+
+    elementos.append(Paragraph(f"<b>Resultado:</b> {resultado}", estilos["Normal"]))
+    elementos.append(Paragraph(f"<b>Probabilidad:</b> {probabilidad*100:.2f}%", estilos["Normal"]))
+    elementos.append(Paragraph("<br/>", estilos["Normal"]))
+
+    elementos.append(Paragraph("<b>Datos del paciente</b>", estilos["Heading2"]))
+
+    for columna in datos.columns:
+        elementos.append(
+            Paragraph(f"{columna}: {datos.iloc[0][columna]}", estilos["Normal"])
+        )
+
+    doc.build(elementos)
+
+    buffer.seek(0)
+    return buffer
 # -------------------------
 # Botón de predicción
 # -------------------------
@@ -103,6 +133,14 @@ if st.button("🔍 Predecir riesgo de diabetes", use_container_width=True):
 
     st.dataframe(datos, use_container_width=True
 
+pdf = generar_pdf(datos, prediccion, probabilidad)
+
+st.download_button(
+    label="📄 Descargar reporte en PDF",
+    data=pdf,
+    file_name="Reporte_Diabetes.pdf",
+    mime="application/pdf"
+)
 
 from io import BytesIO
 from reportlab.lib.styles import getSampleStyleSheet
