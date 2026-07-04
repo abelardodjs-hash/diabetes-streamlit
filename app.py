@@ -115,34 +115,6 @@ if st.button("🔍 Predecir riesgo de diabetes", use_container_width=True):
     st.subheader("📊 Resultado")
 
     if prediccion == 1:
-
-        st.error("⚠️ El paciente presenta **ALTO RIESGO** de diabetes.")
-
-    else:
-
-        st.success("✅ El paciente presenta **BAJO RIESGO** de diabetes.")
-
-    st.metric(
-        label="Probabilidad estimada",
-        value=f"{probabilidad*100:.2f}%"
-    )
-
-    st.progress(float(probabilidad))
-
-    st.subheader("📋 Datos evaluados")
-
-    st.dataframe(datos, use_container_width=True)
-
-if st.button("🔍 Predecir riesgo de diabetes", use_container_width=True):
-
-    prediccion = modelo.predict(datos)[0]
-    probabilidad = modelo.predict_proba(datos)[0][1]
-
-    st.divider()
-
-    st.subheader("📊 Resultado")
-
-    if prediccion == 1:
         st.error("⚠️ El paciente presenta ALTO RIESGO de diabetes.")
     else:
         st.success("✅ El paciente presenta BAJO RIESGO de diabetes.")
